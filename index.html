@@ -162,6 +162,62 @@ var cookieadmin_policy = {"cookieadmin_layout":"box","cookieadmin_modal":"center
 <meta name="msapplication-TileImage" content="https://pgaccess.co.uk/wp-content/uploads/2025/09/cropped-cropped-Logo-scaled-1-270x270.png" />
 	<link rel='stylesheet' id='pagelayer-google-font-css' href='https://fonts.googleapis.com/css?family=Cabin%3A400%2C200%2C600&#038;ver=2.0.9' media='all' />
 
+<!-- GLOBAL GLASSMORPHISM UI OVERRIDE -->
+<style id="global-glassmorphism">
+  /* Global site background */
+  body, .pagelayer-body {
+    background: #000 !important;
+    background-image: radial-gradient(circle at 50% 0%, #0f172a 0%, #000 70%) !important;
+  }
+  
+  /* Header & Navigation */
+  .site-header, .pagelayer-header > div {
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  /* General Hero/Panel/Block Background overlays */
+  .pagelayer-col-holder > .pagelayer-background-overlay, .pagelayer-row-holder > .pagelayer-background-overlay, .elementor-widget-wrap {
+    background: rgba(15, 23, 42, 0.45) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px !important;
+  }
+
+  /* Make sure internal elements don't hide the glass effect */
+  .pagelayer-row, .pagelayer-col {
+    background: transparent !important;
+  }
+  
+  /* Buttons */
+  .pagelayer-btn-holder, .wp-block-button__link {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+    color: #fff !important;
+    border-radius: 30px !important;
+    transition: all 0.3s ease !important;
+  }
+  .pagelayer-btn-holder:hover, .wp-block-button__link:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  }
+
+  /* Sleek Image Containers */
+  .pagelayer-image-holder {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+  }
+</style>
 </head>
 
 	<body class="home wp-singular page-template-default page page-id-77 wp-custom-logo wp-theme-popularfx popularfx-body pagelayer-body">
@@ -1524,12 +1580,47 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
     align-items: center;
   }
   .gracex-status-dot {
+    display: inline-block;
     width: 8px;
     height: 8px;
-    background: #2db742;
+    background: #4ade80;
     border-radius: 50%;
-    margin-right: 6px;
-    box-shadow: 0 0 8px #2db742;
+    margin-right: 4px;
+    box-shadow: 0 0 8px #4ade80;
+  }
+
+  .gracex-prompts {
+    display: flex;
+    gap: 8px;
+    padding: 0 15px 10px 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+  .gracex-prompts::-webkit-scrollbar { display: none; }
+  
+  .gracex-prompt-btn {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 12px;
+    padding: 6px 14px;
+    color: #fff;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+  .gracex-prompt-btn:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    transform: translateY(-2px);
+  }
+
+  @keyframes scaleIn {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
   }
 
   /* Messages Area */
@@ -1651,6 +1742,17 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
     40% { transform: scale(1); }
   }
 
+  @keyframes mic-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+  }
+  .recording-pulse {
+    animation: mic-pulse 1.5s infinite;
+    color: #ff4757 !important;
+    border-color: #ff4757 !important;
+  }
+
   /* Responsive */
   @media (max-width: 480px) {
     #gracex-chat-window {
@@ -1689,8 +1791,18 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
     </div>
   </div>
   
+  <div class="gracex-prompts" id="gracex-prompts">
+    <button class="gracex-prompt-btn">Get a Quote</button>
+    <button class="gracex-prompt-btn">Areas Covered</button>
+    <button class="gracex-prompt-btn">Our Services</button>
+    <button class="gracex-prompt-btn">Contact Sales</button>
+  </div>
+
   <div class="gracex-input-area">
     <input type="text" id="gracex-input" class="gracex-input" placeholder="Type your message..." autocomplete="off">
+    <button id="gracex-mic-btn" class="gracex-send-btn" aria-label="Voice Input" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); margin-right: 8px; color: #fff; box-shadow: none;">
+      <i class="fas fa-microphone"></i>
+    </button>
     <button id="gracex-send-btn" class="gracex-send-btn" aria-label="Send Message">
       <i class="fas fa-paper-plane"></i>
     </button>
@@ -1729,16 +1841,54 @@ document.addEventListener("DOMContentLoaded", () => {
     { keywords: ['hi', 'hello', 'hey', 'morning', 'afternoon'], reply: "Hello there! How can I assist you with your scaffolding needs today?" }
   ];
 
-  async function getGraceXResponse(userText) {
-    userText = userText.toLowerCase();
-    
-    for (let r of responses) {
-      if (r.keywords.some(k => userText.includes(k))) {
-        return r.reply;
-      }
+  // --- Voice TTS Setup ---
+  let voices = [];
+  function populateVoices() {
+    voices = window.speechSynthesis.getVoices();
+  }
+  if ('speechSynthesis' in window) {
+    populateVoices();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = populateVoices;
     }
+  }
+
+  function speakText(text) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel(); // Stop any current speech
     
-    return "Thanks for reaching out! With over 25 years of experience, PG Access is here to help. Could you please provide a few more details, or call us directly at 07734 295274 for immediate assistance?";
+    // Clean text by removing emojis which sound unnatural when spoken
+    const cleanText = text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    
+    // Filter UK voices and find a female one (e.g. Google UK English Female, Microsoft Hazel)
+    const ukVoices = voices.filter(v => v.lang === 'en-GB' || v.lang === 'en_GB');
+    let bestVoice = ukVoices.find(v => v.name.includes('Female') || v.name.includes('Hazel') || v.name.includes('Mia') || v.name.toLowerCase().includes('female'));
+    
+    if (!bestVoice && ukVoices.length > 0) bestVoice = ukVoices[0]; // fallback
+    if (bestVoice) utterance.voice = bestVoice;
+    else utterance.lang = 'en-GB';
+    
+    utterance.rate = 1.05; // Slightly upbeat
+    utterance.pitch = 1.15; // Slightly softer/higher pitch
+    window.speechSynthesis.speak(utterance);
+  }
+  // -----------------------
+
+  async function getGraceXResponse(userText) {
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userText })
+      });
+      
+      const data = await response.json();
+      return data.reply || "I'm having trouble connecting to my servers right now. Please call us at 07734 295274.";
+    } catch (error) {
+      console.error("Chat API Error:", error);
+      return "I'm currently unable to process messages due to a connection issue. Please call us directly at 07734 295274.";
+    }
   }
 
   async function handleSend() {
@@ -1754,13 +1904,12 @@ document.addEventListener("DOMContentLoaded", () => {
     messagesContainer.appendChild(typingIndicator); // move to bottom
     scrollToBottom();
     
-    // Simulate API delay
-    const delay = 1000 + Math.random() * 800;
-    setTimeout(async () => {
-      typingIndicator.style.display = 'none';
-      const botResponse = await getGraceXResponse(text);
-      addMessage(botResponse, 'bot');
-    }, delay);
+    // Call the secured backend
+    const botResponse = await getGraceXResponse(text);
+    
+    typingIndicator.style.display = 'none';
+    addMessage(botResponse, 'bot');
+    speakText(botResponse); // Trigger audio playback
   }
 
   function addMessage(text, sender) {
@@ -1773,6 +1922,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function scrollToBottom() {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  // Quick Prompt Options Logic
+  const promptContainer = document.getElementById('gracex-prompts');
+  if (promptContainer) {
+    promptContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('gracex-prompt-btn')) {
+        const text = e.target.textContent;
+        // Don't append into the input field, just send it directly
+        inputField.value = text;
+        handleSend();
+      }
+    });
+  }
+
+  // Mic STT Logic
+  const micBtn = document.getElementById('gracex-mic-btn');
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  
+  if (SpeechRecognition && micBtn) {
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-GB';
+
+    let isRecording = false;
+
+    recognition.onstart = () => {
+      isRecording = true;
+      micBtn.classList.add('recording-pulse');
+      inputField.placeholder = "Listening...";
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      inputField.value = transcript;
+      handleSend(); // Auto-send when speech is recognized
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      micBtn.classList.remove('recording-pulse');
+      inputField.placeholder = "Type your message...";
+      isRecording = false;
+    };
+
+    recognition.onend = () => {
+      isRecording = false;
+      micBtn.classList.remove('recording-pulse');
+      inputField.placeholder = "Type your message...";
+    };
+
+    micBtn.addEventListener('click', () => {
+      if (isRecording) recognition.stop();
+      else recognition.start();
+    });
+  } else if (micBtn) {
+    micBtn.style.display = 'none'; // Hide if unsupported
   }
 
   sendBtn.addEventListener('click', handleSend);
