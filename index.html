@@ -1514,7 +1514,7 @@ body.rtl .p-spc1995 .pagelayer-email-icon{margin-left:10px}
 				</div>
 			</div><div>
 			<button type="button" class="cookieadmin_re_consent">
-				<img class="cookieadmin_reconsent_img" height="40" width="40" src="" alt="Re-consent">
+				<img class="cookieadmin_reconsent_img" height="40" width="40" src="https://pgaccess.co.uk/wp-content/uploads/2025/09/cropped-cropped-Logo-scaled-1.png" alt="Re-consent">
 			</button>
 		</div>
 <script src="https://pgaccess.co.uk/wp-content/themes/popularfx/js/navigation.js?ver=1.2.7" id="popularfx-navigation-js"></script>
@@ -1828,25 +1828,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const responses = [
-    { keywords: ['quote', 'price', 'cost', 'estimate', 'much'], reply: "We offer FREE, no-obligation quotes! Please call us at 07734 295274 or visit our Contact Us page to share details about your project." },
-    { keywords: ['service', 'do you do', 'what do you', 'scaffolding'], reply: "We provide comprehensive scaffolding services including domestic, commercial, new builds, and temporary roofs. We cover the M25 and the South East." },
-    { keywords: ['location', 'where', 'area', 'surrey', 'london'], reply: "We proudly serve Surrey, South West London, the M25 region, and the greater South East." },
-    { keywords: ['contact', 'call', 'phone', 'email', 'number'], reply: "You can reach our team 24/7 at 07734 295274. We're fully insured and offer emergency callouts too!" },
-    { keywords: ['temp', 'roof', 'weather'], reply: "Our temporary roof scaffolding provides robust weather protection, shielding your site from wind, rain, and snow so your project stays on track." },
-    { keywords: ['hi', 'hello', 'hey', 'morning', 'afternoon'], reply: "Hello there! How can I assist you with your scaffolding needs today?" }
-  ];
-
   async function getGraceXResponse(userText) {
-    userText = userText.toLowerCase();
-    
-    for (let r of responses) {
-      if (r.keywords.some(k => userText.includes(k))) {
-        return r.reply;
-      }
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userText })
+      });
+      const data = await response.json();
+      return data.reply || "Thanks for reaching out! Please call us directly at 07734 295274 for immediate assistance.";
+    } catch (error) {
+      console.error("Chat API Error:", error);
+      return "I'm having connection issues. Please call 07734 295274.";
     }
-    
-    return "Thanks for reaching out! With over 25 years of experience, PG Access is here to help. Could you please provide a few more details, or call us directly at 07734 295274 for immediate assistance?";
+  }
+
+  function playVoice(text) {
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.1;
+      utterance.volume = 1;
+      
+      const voices = speechSynthesis.getVoices();
+      const femaleVoice = voices.find(v => v.name.includes('Female') || v.name.includes('Google UK English Female'));
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
+      }
+      
+      speechSynthesis.speak(utterance);
+    }
   }
 
   async function handleSend() {
@@ -1862,13 +1874,10 @@ document.addEventListener("DOMContentLoaded", () => {
     messagesContainer.appendChild(typingIndicator); // move to bottom
     scrollToBottom();
     
-    // Simulate API delay
-    const delay = 1000 + Math.random() * 800;
-    setTimeout(async () => {
-      typingIndicator.style.display = 'none';
-      const botResponse = await getGraceXResponse(text);
-      addMessage(botResponse, 'bot');
-    }, delay);
+    const botResponse = await getGraceXResponse(text);
+    typingIndicator.style.display = 'none';
+    addMessage(botResponse, 'bot');
+    playVoice(botResponse);
   }
 
   function addMessage(text, sender) {
