@@ -1797,11 +1797,22 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
     </div>
   </div>
   
-  <div class="gracex-input-area">
-    <input type="text" id="gracex-input" class="gracex-input" placeholder="Type your message..." autocomplete="off">
-    <button id="gracex-send-btn" class="gracex-send-btn">
-      <i class="fas fa-paper-plane"></i>
-    </button>
+  <div class="gracex-input-area" style="flex-direction: column;">
+    <select id="gracex-prompts" style="margin-bottom: 8px; width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; color: #555; background: #fcfcfc; cursor: pointer; outline: none;">
+      <option value="" disabled selected>Ask a quick question...</option>
+      <option value="I need a quote for scaffolding">I need a quote for scaffolding</option>
+      <option value="What areas do you cover?">What areas do you cover?</option>
+      <option value="Do you do temporary roofs?">Do you do temporary roofs?</option>
+      <option value="Are you fully insured?">Are you fully insured?</option>
+      <option value="I have an emergency callout!">I have an emergency callout!</option>
+      <option value="Can you tell me about your safety record?">Can you tell me about your safety record?</option>
+    </select>
+    <div style="display: flex; width: 100%;">
+      <input type="text" id="gracex-input" class="gracex-input" placeholder="Type your message..." autocomplete="off">
+      <button id="gracex-send-btn" class="gracex-send-btn">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -1813,6 +1824,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputField = document.getElementById('gracex-input');
   const sendBtn = document.getElementById('gracex-send-btn');
   const typingIndicator = document.getElementById('gracex-typing');
+  const promptSelect = document.getElementById('gracex-prompts');
 
   let isOpen = false;
 
@@ -1880,14 +1892,6 @@ document.addEventListener("DOMContentLoaded", () => {
     playVoice(botResponse);
   }
 
-  function addMessage(text, sender) {
-    const msgDiv = document.createElement('div');
-    msgDiv.className = `gracex-msg gracex-msg-${sender}`;
-    msgDiv.textContent = text;
-    messagesContainer.insertBefore(msgDiv, typingIndicator);
-    scrollToBottom();
-  }
-
   function scrollToBottom() {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
@@ -1895,6 +1899,15 @@ document.addEventListener("DOMContentLoaded", () => {
   sendBtn.addEventListener('click', handleSend);
   inputField.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleSend();
+  });
+  
+  promptSelect.addEventListener('change', (e) => {
+    const val = e.target.value;
+    if (val) {
+      inputField.value = val;
+      handleSend();
+      e.target.selectedIndex = 0;
+    }
   });
 });
 </script>
