@@ -436,8 +436,8 @@
             const utterance = new SpeechSynthesisUtterance(cleanText);
             const ukVoices = voices.filter(v => v.lang === 'en-GB' || v.lang === 'en_GB');
             
-            // Aggressively target the best South London / UK Female voices available on the local OS
-            const voicePrefs = ['Libby', 'Sonia', 'Mia', 'Hazel', 'Abbi', 'Bella', 'Hollie', 'Female', 'female'];
+            // Voice locked strictly to Google UK English Female as requested
+            const voicePrefs = ['Google UK English Female', 'Google', 'Libby', 'Sonia', 'Mia', 'Hazel', 'Female', 'female'];
             let bestVoice = null;
             for (let pref of voicePrefs) {
                 bestVoice = ukVoices.find(v => v.name.includes(pref));
@@ -446,9 +446,11 @@
             if (!bestVoice && ukVoices.length > 0) bestVoice = ukVoices[0];
             
             if (bestVoice) utterance.voice = bestVoice; else utterance.lang = 'en-GB';
-            // Adjusted rate/pitch to ensure a softer, friendlier, more conversational tone
-            utterance.rate = 0.98; 
-            utterance.pitch = 1.05; 
+            
+            // User requested explicit values: speed 1.15, pitch 1.20, volume 100
+            utterance.rate = 1.15; 
+            utterance.pitch = 1.20; 
+            utterance.volume = 1.0; 
             window.speechSynthesis.speak(utterance);
         }
 
