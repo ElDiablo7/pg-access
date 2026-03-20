@@ -432,13 +432,23 @@
         function speakText(text) {
             if (!('speechSynthesis' in window)) return;
             window.speechSynthesis.cancel();
-            const cleanText = text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
+            const cleanText = text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]|\*)/g, '');
             const utterance = new SpeechSynthesisUtterance(cleanText);
             const ukVoices = voices.filter(v => v.lang === 'en-GB' || v.lang === 'en_GB');
-            let bestVoice = ukVoices.find(v => v.name.includes('Female') || v.name.includes('Hazel') || v.name.includes('Mia') || v.name.toLowerCase().includes('female'));
+            
+            // Aggressively target the best South London / UK Female voices available on the local OS
+            const voicePrefs = ['Libby', 'Sonia', 'Mia', 'Hazel', 'Abbi', 'Bella', 'Hollie', 'Female', 'female'];
+            let bestVoice = null;
+            for (let pref of voicePrefs) {
+                bestVoice = ukVoices.find(v => v.name.includes(pref));
+                if (bestVoice) break;
+            }
             if (!bestVoice && ukVoices.length > 0) bestVoice = ukVoices[0];
+            
             if (bestVoice) utterance.voice = bestVoice; else utterance.lang = 'en-GB';
-            utterance.rate = 1.05; utterance.pitch = 1.15; 
+            // Adjusted rate/pitch to ensure a softer, friendlier, more conversational tone
+            utterance.rate = 0.98; 
+            utterance.pitch = 1.05; 
             window.speechSynthesis.speak(utterance);
         }
 
