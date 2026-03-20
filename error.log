@@ -1,0 +1,84 @@
+﻿[dotenv@17.3.1] injecting env (0) from .env -- tip: ­ƒöÉ encrypt with Dotenvx: https://dotenvx.com
+node : C:\Users\anyth\
+AppData\Local\GitHubDe
+sktop\app-3.5.6\pg-acc
+ess\node_modules\opena
+i\client.js:124
+At line:1 char:70
++ ... Local\GitHubDesk
+top\app-3.5.6\pg-acces
+s"; node server.js 
+2>&1 | Out-F ...
++                     
+                      
+    
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo    
+          : 
+NotSpecified: (C    
+:\Users\anyth\...i\cl 
+   
+ient.js:124:String) [ 
+   ], RemoteException
+    + 
+FullyQualifiedError   
+ Id : 
+NativeCommandErr    or
+ 
+            throw new 
+Errors.OpenAIError('Mi
+ssing credentials. 
+Please pass an 
+`apiKey`, or set the 
+`OPENAI_API_KEY` 
+environment 
+variable.');
+            ^
+
+OpenAIError: Missing 
+credentials. Please 
+pass an `apiKey`, or 
+set the 
+`OPENAI_API_KEY` 
+environment variable.
+    at new OpenAI (C:\
+Users\anyth\AppData\Lo
+cal\GitHubDesktop\app-
+3.5.6\pg-access\node_m
+odules\openai\client.j
+s:124:19)
+    at 
+Object.<anonymous> (C:
+\Users\anyth\AppData\L
+ocal\GitHubDesktop\app
+-3.5.6\pg-access\serve
+r.js:12:16)
+    at 
+Module._compile (node:
+internal/modules/cjs/l
+oader:1761:14)
+    at Object..js (nod
+e:internal/modules/cjs
+/loader:1893:10)
+    at Module.load (no
+de:internal/modules/cj
+s/loader:1481:32)
+    at Module._load (n
+ode:internal/modules/c
+js/loader:1300:12)
+    at TracingChannel.
+traceSync (node:diagno
+stics_channel:328:14)
+    at wrapModuleLoad 
+(node:internal/modules
+/cjs/loader:245:24)
+    at Module.executeU
+serEntryPoint [as 
+runMain] (node:interna
+l/modules/run_main:154
+:5)
+    at node:internal/m
+ain/run_main_module:33
+:47
+
+Node.js v24.12.0
